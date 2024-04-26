@@ -6,24 +6,41 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // @dev: This contract is a simple token minting contract that allows anyone to mint tokens.
 // It is intended to mimmick the behavior of minting brc20 or runes tokens on bitcoin
-contract MyToken is ERC20 {
+contract OpenMint is ERC20 {
     uint256 public maxSupply;
     uint256 public mintAmount;
     uint256 public totalMints;
+    uint256 public totalBurns;
+    uint256 public startBlock;
+    uint256 public endBlock;
     
     constructor() ERC20("Open Mint", "OMINT") (
         uint256 _maxSupply;
         uint256 _mintAmount;
+        uint256 _startBlock;
+        uint256 _endBlock;
     ) {
         maxSupply = _maxSupply;
         mintAmount = _mintAmount;
+        startBlock = _startBlock;
+        endBlock = _endBlock;
     }
 
     function publicMint() public {
+        require(block.number >= startBlock && block.number <= endBlock, "Mint not in progress");
         require(totalSupply() + mintAmount <= maxSupply, "Max supply reached");
         _mint(msg.sender, mintAmount);
         totalMints += 1;
     }
+
+    function burn(uint256 amount) public {
+        _burn(msg.sender, amount);
+        totalBurns += amount;
+    }
     
+    function burnFrom(address from, uint256 amount) public {
+        _burn(from, amount);
+        totalBurns += amount;
+    }
 }
 

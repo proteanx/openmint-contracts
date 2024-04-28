@@ -15,20 +15,19 @@ contract OpenMint is ERC20 {
     uint256 public endBlock;
     uint256 public maxMints;
     
-    constructor() ERC20("Open Mint", "OMINT") (
-        uint256 _maxMints;
-        uint256 _mintAmount;
-        uint256 _startBlock;
-        uint256 _endBlock;
-    ) {
+    constructor(
+        uint256 _maxMints,
+        uint256 _mintAmount,
+        uint256 _startBlock,
+        uint256 _endBlock
+    ) ERC20("Open Mint", "OMINT") {
         maxMints = _maxMints;
         mintAmount = _mintAmount;
         startBlock = _startBlock;
         endBlock = _endBlock;
+        maxSupply = maxMints * mintAmount;
     }
-
-    maxSupply = maxMints * mintAmount;
-
+    
     function publicMint() public {
         require(block.number >= startBlock && block.number <= endBlock, "Mint not in progress");
         require(totalMints <= maxMints, "Maximum mints reached");

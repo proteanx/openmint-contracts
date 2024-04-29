@@ -30,7 +30,7 @@ contract OpenMint is ERC20 {
     
     function publicMint() public {
         require(block.number >= startBlock && block.number <= endBlock, "Mint not in progress");
-        require(totalMints <= maxMints, "Maximum mints reached");
+        require(totalMints < maxMints, "Maximum mints reached");
         _mint(msg.sender, mintAmount);
         totalMints += 1;
     }

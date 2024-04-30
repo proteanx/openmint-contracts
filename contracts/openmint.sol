@@ -14,6 +14,7 @@ contract OpenMint is ERC20 {
     uint256 public startBlock;
     uint256 public endBlock;
     uint256 public maxMints;
+    uint256 public mintsRemaining;
     
     constructor(
         uint256 _maxMints,
@@ -26,6 +27,10 @@ contract OpenMint is ERC20 {
         startBlock = _startBlock;
         endBlock = _endBlock;
         maxSupply = maxMints * mintAmount;
+    }
+
+    function mintsRemaining() public view returns (uint256) {
+        return maxMints - totalMints;
     }
     
     function publicMint() public {

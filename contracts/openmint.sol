@@ -24,6 +24,8 @@ contract OpenMint is ERC20 {
     ) ERC20("Open Mint", "OMINT") {
         maxMints = _maxMints;
         mintAmount = _mintAmount;
+        require(_endBlock > _startBlock, "End block must be greater than start block");
+        require(_endBlock > block.number, "End block must be in the future");
         startBlock = _startBlock;
         endBlock = _endBlock;
         maxSupply = maxMints * mintAmount;

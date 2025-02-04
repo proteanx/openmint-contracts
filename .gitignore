@@ -1,2 +1,4 @@
 node_modules
-
+flattened.sol
+artifacts/*
+cache/*

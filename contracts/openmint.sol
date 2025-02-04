@@ -16,6 +16,8 @@ contract OpenMint is ERC20 {
     uint256 public endBlock;
     uint256 public maxMints;
     
+    mapping(address => uint256) public lastMintBlock;
+    
     constructor(
         uint256 _maxMints,
         uint256 _mintAmount,
@@ -44,8 +46,11 @@ contract OpenMint is ERC20 {
     function publicMint() public {
         require(block.number >= startBlock && block.number <= endBlock, "Mint not in progress");
         require(totalMints < maxMints, "Maximum mints reached");
+        require(block.number > lastMintBlock[msg.sender] + 1, "Must wait 1 block between mints");
+        
         _mint(msg.sender, mintAmount);
         totalMints += 1;
+        lastMintBlock[msg.sender] = block.number;
 
         emit Minted(msg.sender);
     }
